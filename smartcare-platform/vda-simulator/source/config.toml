@@ -1,0 +1,35 @@
+[mqtt_broker]
+host = "localhost"                  # MQTT broker address
+port = "1883"                        # MQTT broker port
+vda_interface = "uagv"               # VDA interface to use
+
+[vehicle]
+serial_number = "s1"                 # Serial number of the AGV
+manufacturer = "rikeb"               # Manufacturer name
+vda_version = "v2"                   # VDA standard version
+vda_full_version = "2.0.0"           # Full VDA version
+collision_radius = 0.5              # Default circular AMR footprint radius, in map units
+
+[settings]
+map_id = "webots"                    # Map identifier
+state_frequency = 1                  # Frequency for state updates (in Hz)
+visualization_frequency = 1          # Frequency for visualization updates (in Hz)
+action_time = 1.0                    # Action execution time (in seconds)
+robot_count = 2                      # Number of robots to simulate
+spawn_x = 14.0                       # First robot's startup X coordinate
+spawn_y = 11.0                       # First robot's startup Y coordinate
+spawn_offset_x = -1.0                 # X offset added for each additional robot
+spawn_offset_y = 0.0                 # Y offset added for each additional robot
+speed = 0.05                         # Robot speed in meters per second
+floorplan_x = 65.0                   # Floorplan width in meters, from x=0
+floorplan_y = 40.0                   # Floorplan height in meters, from y=0
+background_image = "floorplan.png"   # Background image path relative to the project directory
+battery_consumption_per_meter = 0.1   # Battery percentage points consumed per meter traveled
+battery_charging_rate_per_second = 2.0 # Battery percentage points restored per second at a charging station
+battery_health_min = 50                # Minimum AMR battery condition, in percent
+battery_health_max = 100               # Maximum AMR battery condition, in percent
+
+# Optional per-AMR overrides, keyed by full serial number:
+# [settings.collision_radii]
+# AMR1 = 0.75
+# AMR2 = 0.5

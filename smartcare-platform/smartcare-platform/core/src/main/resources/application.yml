@@ -1,0 +1,84 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: smartcare-core
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: INFO
+    de.smartcare: INFO
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SmartCare core settings. Every key can also be set as an environment variable,
+# e.g. smartcare.mqtt.host  ->  SMARTCARE_MQTT_HOST,  smartcare.energy.low-pct -> SMARTCARE_ENERGY_LOW_PCT
+# ─────────────────────────────────────────────────────────────────────────────
+smartcare:
+  core:
+    enabled: true            # false = run only the vehicle simulator (used by the docker "sim" service)
+    tick-ms: 250
+    robot-offline-s: 15
+    order-ack-timeout-s: 10
+    allowed-origins: http://localhost:4200,http://localhost:8081,http://localhost:8080
+    external-api-key: ""     # protects /api/external/** when set
+  mqtt:
+    mode: INTERNAL           # INTERNAL = in-process loopback (no broker needed) | BROKER = real MQTT broker
+    host: localhost
+    port: 1883
+    username: ""
+    password: ""
+    interface-name: uagv     # VDA 5050 topic prefix: {interface-name}/{major-version}/{manufacturer}/{serial}/{topic}
+    major-version: v2
+    pick-action: pick        # VDA action types sent at pickup / drop-off / charger. Blank = send no action.
+    drop-action: drop
+    charge-action: startCharging
+    map-id: webots           # must equal the simulator's map_id (config.toml)
+    order-mode: HORIZON      # HORIZON = VDA base/horizon + order updates | STEPWISE = one order per released stretch (organizers' simulator)
+  map:
+    file: classpath:map/hospital.json   # organizers' route_nodes.json (copy any updated version over this file)
+    width: 65                # floorplan_x of the simulator
+    height: 40               # floorplan_y
+    background-image: floorplan.png
+    snap-radius-m: 8.0
+  dispatch:
+    mode: AUTO               # AUTO | SEMI_AUTO (SEMI_AUTO: no automatic deadlock fixes / opportunistic charging)
+    hungarian: true
+    max-batch: 12
+  energy:
+    critical-pct: 15
+    low-pct: 30
+    target-pct: 90
+    min-release-pct: 60
+    opportunistic-below-pct: 60
+    reserve-pct: 8
+  traffic:
+    lookahead-segments: 2
+    avoid-chargers-as-via: true   # routes pass a charging station only when it is the destination
+    deadlock-min-wait-s: 5
+    station-capacity-default: 1   # real vehicles have a physical footprint; one per node
+  anomaly:
+    idle-warn-s: 600
+    queued-warn-s: 180
+    no-progress-s: 45
+    battery-z: 3.0
+  sim:
+    enabled: true            # built-in VDA 5050 vehicle simulator
+    robots: 5
+    speed-mps: 1.0
+  llm:
+    enabled: false           # optional natural-language explanations (never executes anything)
+    api-key: ""              # or env SMARTCARE_LLM_API_KEY

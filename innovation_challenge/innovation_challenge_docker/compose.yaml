@@ -1,0 +1,28 @@
+services:
+    mqtt:
+        image: sar/move-vda5050-mqtt
+        build:
+            context: ./vda5050-mqtt
+            dockerfile: Dockerfile
+        ports:
+            - 1883:1883
+            - 9001:9001
+    robotSim:
+        image: sar/vda5050-robotsim
+        build:
+            context: ./vda5050-robotSim
+            dockerfile: Dockerfile
+        environment: 
+            VDA_MQTT_HOST: mqtt
+            VDA_MQTT_PORT: 1883
+            VDA_INTERFACE: uagv
+            VDA_ROBOT_COUNT: 5
+    robotTester:
+        image: sar/vda5050-robot-tester
+        build:
+            context: ./vda5050-robotTester
+            dockerfile: Dockerfile
+        ports:
+            - 8080:8081
+        environment:
+            VDE5050_BASE-URL: http://applicationname:port

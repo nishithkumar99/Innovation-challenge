@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SAR MOVE VDE5050 REST API</title>
+    <style>
+        :root {
+            --background: #f4f7fb;
+            --card: #ffffff;
+            --text: #172033;
+            --muted: #64748b;
+            --border: #dbe3ef;
+            --blue: #2563eb;
+            --blue-soft: #eff6ff;
+            --green: #047857;
+            --green-soft: #ecfdf5;
+            --orange: #c2410c;
+            --orange-soft: #fff7ed;
+            --purple: #7c3aed;
+            --purple-soft: #f5f3ff;
+            --code: #111827;
+            --shadow: 0 12px 30px rgba(15, 23, 42, .08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            background: var(--background);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.55;
+        }
+
+        .hero {
+            padding: 64px 24px 88px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0f2b5b, #2563eb 55%, #38bdf8);
+        }
+
+        .hero-content,
+        main {
+            width: min(1180px, 100%);
+            margin: 0 auto;
+        }
+
+        .eyebrow {
+            margin: 0 0 12px;
+            color: #bfdbfe;
+            font-size: .8rem;
+            font-weight: 800;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            max-width: 800px;
+            margin: 0;
+            font-size: clamp(2.25rem, 5vw, 4.5rem);
+            line-height: 1.05;
+        }
+
+        .hero p {
+            max-width: 720px;
+            margin: 22px 0 0;
+            color: #dbeafe;
+            font-size: 1.12rem;
+        }
+
+        .hero-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .hero-links a {
+            padding: 10px 16px;
+            border: 1px solid rgba(255, 255, 255, .35);
+            border-radius: 999px;
+            color: #ffffff;
+            text-decoration: none;
+            background: rgba(255, 255, 255, .12);
+        }
+
+        main {
+            position: relative;
+            margin-top: -42px;
+            padding: 0 24px 64px;
+        }
+
+        .endpoint,
+        .info-card {
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: var(--card);
+            box-shadow: var(--shadow);
+        }
+
+        section {
+            margin: 42px 0;
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: 1.85rem;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .section-intro {
+            margin-top: -6px;
+            color: var(--muted);
+        }
+
+        .endpoint {
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding: 22px 26px;
+            border-bottom: 1px solid var(--border);
+            background: #fbfdff;
+        }
+
+        .method {
+            padding: 5px 10px;
+            border-radius: 7px;
+            color: #ffffff;
+            font-size: .78rem;
+            font-weight: 900;
+            letter-spacing: .04em;
+        }
+
+        .method.post {
+            background: var(--green);
+        }
+
+        .path {
+            color: var(--text);
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .endpoint-content {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, .9fr);
+            gap: 26px;
+            padding: 26px;
+        }
+
+        .endpoint-content p:first-child {
+            margin-top: 0;
+        }
+
+        pre {
+            overflow-x: auto;
+            margin: 12px 0 0;
+            padding: 18px;
+            border-radius: 12px;
+            color: #e5e7eb;
+            background: var(--code);
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+            font-size: .85rem;
+            line-height: 1.6;
+        }
+
+        code {
+            padding: 2px 5px;
+            border-radius: 5px;
+            color: #1e40af;
+            background: var(--blue-soft);
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        }
+
+        pre code {
+            padding: 0;
+            color: inherit;
+            background: transparent;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: .92rem;
+        }
+
+        th,
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--muted);
+            font-size: .78rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        td:first-child {
+            white-space: nowrap;
+            font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+            font-weight: 700;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-card {
+            padding: 24px;
+        }
+
+        .info-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            color: var(--muted);
+        }
+
+        .notice {
+            padding: 16px 18px;
+            border-left: 4px solid var(--orange);
+            border-radius: 10px;
+            color: #7c2d12;
+            background: var(--orange-soft);
+        }
+
+        footer {
+            padding: 30px 24px 50px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        @media (max-width: 800px) {
+            .info-grid,
+            .endpoint-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 42px;
+                padding-bottom: 70px;
+            }
+
+            main {
+                padding: 0 14px 40px;
+            }
+
+            .endpoint-header,
+            .endpoint-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="hero">
+    <div class="hero-content">
+        <p class="eyebrow">SAR MOVE · VDE5050</p>
+        <h1>Vehicle control REST API</h1>
+        <p>Send orders, cancel vehicle actions, load named orders, and inspect the latest vehicle state available from the service.</p>
+        <nav class="hero-links" aria-label="API resources">
+            <a href="/swagger-ui.html">Open Swagger UI</a>
+            <a href="/v3/api-docs">OpenAPI JSON</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section>
+        <h2>Quick start</h2>
+        <p class="section-intro">Requests with bodies require <code>Content-Type: application/json</code>.</p>
+        <div class="info-grid">
+            <article class="info-card">
+                <h3>API base path</h3>
+                <pre><code>/move/vehicleApi</code></pre>
+            </article>
+            <article class="info-card">
+                <h3>Interactive documentation</h3>
+                <p><a href="/swagger-ui.html">Swagger UI</a> provides a try-it-now interface. The machine-readable specification is available at <a href="/v3/api-docs">/v3/api-docs</a>.</p>
+            </article>
+        </div>
+    </section>
+
+    <section id="operations">
+        <h2>Operations</h2>
+        <p class="section-intro">Use the host and port of your deployment when calling these endpoints.</p>
+
+        <article class="endpoint" id="call-vehicle">
+            <header class="endpoint-header">
+                <span class="method post">POST</span>
+                <span class="path">/move/vehicleApi/callVehicle</span>
+                <h3>Send a vehicle to a map point</h3>
+            </header>
+            <div class="endpoint-content">
+                <div>
+                    <p>Loads the matching node from <code>nodes.json</code>, creates a VDA5050 order, and submits it to the vehicle-control backend.</p>
+                    <table>
+                        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td>vehicleManufacturer</td><td>string</td><td>VDA5050 manufacturer name.</td></tr>
+                            <tr><td>vehicleId</td><td>string</td><td>Vehicle serial number.</td></tr>
+                            <tr><td>mapName</td><td>string</td><td>Target map name.</td></tr>
+                            <tr><td>pointName</td><td>string</td><td>Target point name.</td></tr>
+                            <tr><td>callbackEndpoint</td><td>string</td><td>Accepted by the DTO but not currently used.</td></tr>
+                            <tr><td>actions</td><td>string[]</td><td>Accepted by the DTO but not currently used.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <strong>Request</strong>
+                    <pre><code>{
+  "vehicleManufacturer": "SAR",
+  "vehicleId": "agv01",
+  "mapName": "main-floor",
+  "pointName": "station-01"
+}</code></pre>
+                    <strong>Response</strong>
+                    <pre><code>200 OK</code></pre>
+                </div>
+            </div>
+        </article>
+
+        <article class="endpoint" id="cancel">
+            <header class="endpoint-header">
+                <span class="method post">POST</span>
+                <span class="path">/move/vehicleApi/cancel</span>
+                <h3>Cancel an order</h3>
+            </header>
+            <div class="endpoint-content">
+                <div>
+                    <p>Submits a hard-blocking VDA5050 <code>cancelOrder</code> instant action for the vehicle.</p>
+                    <table>
+                        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td>vehicleManufacturer</td><td>string</td><td>VDA5050 manufacturer name.</td></tr>
+                            <tr><td>vehicleId</td><td>string</td><td>Vehicle serial number.</td></tr>
+                            <tr><td>orderId</td><td>string</td><td>Accepted by the DTO; the current implementation generates the cancel action ID independently.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <strong>Request</strong>
+                    <pre><code>{
+  "vehicleManufacturer": "SAR",
+  "vehicleId": "agv01",
+  "orderId": "order-123"
+}</code></pre>
+                    <strong>Response</strong>
+                    <pre><code>200 OK</code></pre>
+                </div>
+            </div>
+        </article>
+
+        <article class="endpoint" id="named-order">
+            <header class="endpoint-header">
+                <span class="method post">POST</span>
+                <span class="path">/move/vehicleApi/namedOrder</span>
+                <h3>Send a named order</h3>
+            </header>
+            <div class="endpoint-content">
+                <div>
+                    <p>Loads <code>order-&lt;orderName&gt;.json</code>, adds vehicle information and a generated order ID, then submits it to the vehicle-control backend.</p>
+                    <table>
+                        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td>vehicleManufacturer</td><td>string</td><td>VDA5050 manufacturer name.</td></tr>
+                            <tr><td>vehicleId</td><td>string</td><td>Vehicle serial number.</td></tr>
+                            <tr><td>orderName</td><td>string</td><td>Name used to load the predefined order file.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <strong>Request</strong>
+                    <pre><code>{
+  "vehicleManufacturer": "SAR",
+  "vehicleId": "agv01",
+  "orderName": "go-to-charging-station"
+}</code></pre>
+                    <strong>Response</strong>
+                    <pre><code>200 OK</code></pre>
+                </div>
+            </div>
+        </article>
+
+        <article class="endpoint" id="status-single">
+            <header class="endpoint-header">
+                <span class="method post">POST</span>
+                <span class="path">/move/vehicleApi/statusSingle</span>
+                <h3>Read one vehicle status</h3>
+            </header>
+            <div class="endpoint-content">
+                <div>
+                    <p>Returns the latest state available for one manufacturer and vehicle ID.</p>
+                    <table>
+                        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td>vehicleManufacturer</td><td>string</td><td>Must not be blank.</td></tr>
+                            <tr><td>vehicleId</td><td>string</td><td>Must not be blank.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <strong>Request</strong>
+                    <pre><code>{
+  "vehicleManufacturer": "SAR",
+  "vehicleId": "agv01"
+}</code></pre>
+                    <strong>Response</strong>
+                    <pre><code>{
+  "vehicleManufacturer": "SAR",
+  "vehicleId": "agv01",
+  "timestamp": "2026-10-07T13:49:45Z",
+  "lastOrderId": "order-123",
+  "currentlyMoving": false,
+  "paused": false,
+  "positionX": 12.5,
+  "positionY": 8.25,
+  "mapId": "main-floor",
+  "actionState": "WAITING",
+  "batteryCharge": "85",
+  "bytteryHealth": "GOOD",
+  "charging": false,
+  "errorCode": "",
+  "errorDescription": ""
+}</code></pre>
+                </div>
+            </div>
+        </article>
+
+        <article class="endpoint" id="status-multiple">
+            <header class="endpoint-header">
+                <span class="method post">POST</span>
+                <span class="path">/move/vehicleApi/statusMultiple</span>
+                <h3>Read multiple vehicle statuses</h3>
+            </header>
+            <div class="endpoint-content">
+                <div>
+                    <p>Filters the latest service state cache and returns matching vehicle statuses.</p>
+                    <table>
+                        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td>vehicleManufacturer</td><td>string</td><td>Manufacturer filter.</td></tr>
+                            <tr><td>vehicleId</td><td>string</td><td>Vehicle ID filter.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <strong>Request</strong>
+                    <pre><code>{
+  "vehicleManufacturer": "SAR",
+  "vehicleId": "agv"
+}</code></pre>
+                    <strong>Response</strong>
+                    <pre><code>{
+  "statusList": [
+    {
+      "vehicleManufacturer": "SAR",
+      "vehicleId": "agv01",
+      "currentlyMoving": false,
+      "paused": false,
+      "positionX": 12.5,
+      "positionY": 8.25,
+      "mapId": "main-floor",
+      "charging": false
+    }
+  ]
+}</code></pre>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section>
+        <h2>Runtime notes</h2>
+        <div class="info-grid">
+            <article class="info-card">
+                <h3>Status source</h3>
+                <p>Status endpoints return the latest vehicle state currently available to the service.</p>
+            </article>
+            <article class="info-card">
+                <h3>Empty state results</h3>
+                <p>If no state is available for a vehicle, the response may contain an empty status object or an empty status list.</p>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer>
+    SAR_MOVE_VDE5050 · REST API reference · <a href="/swagger-ui.html">Swagger UI</a>
+</footer>
+</body>
+</html>

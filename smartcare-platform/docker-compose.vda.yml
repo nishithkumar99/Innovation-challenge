@@ -1,0 +1,39 @@
+# SmartCareLogistics with the ORGANIZERS' VDA 5050 simulator as the only thing that moves robots:
+#   docker compose -f docker-compose.vda.yml up --build
+#   UI http://localhost:8081   Core API http://localhost:8080   MQTT localhost:1883
+# The built-in Java simulator is NOT started. The UI is unchanged.
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports: ["1883:1883", "9001:9001"]
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  vda-sim:
+    build: ./vda-simulator
+    depends_on: [mosquitto]
+    environment:
+      VDA_MQTT_HOST: mosquitto
+      VDA_MQTT_PORT: "1883"
+      VDA_INTERFACE: uagv
+      VDA_ROBOT_COUNT: "5"
+      # VDA_SPEED: "0.05"          # metres per 50 ms tick (0.05 = 1 m/s); keep SMARTCARE_SIM_SPEED_MPS = VDA_SPEED * 20
+    restart: unless-stopped
+
+  core:
+    build: ./core
+    depends_on: [mosquitto, vda-sim]
+    ports: ["8080:8080"]
+    environment:
+      SPRING_PROFILES_ACTIVE: vda
+      SMARTCARE_MQTT_MODE: BROKER
+      SMARTCARE_MQTT_HOST: mosquitto
+      SMARTCARE_SIM_ENABLED: "false"
+      SMARTCARE_CORE_ALLOWED_ORIGINS: http://localhost:8081,http://localhost:4200,http://localhost:8080
+
+  ui:
+    build: ./ui
+    depends_on: [core]
+    ports: ["8081:80"]
+    environment:
+      SCL_BACKEND: real

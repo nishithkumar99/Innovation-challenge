@@ -1,0 +1,29 @@
+{
+  "world": { "w": 100, "h": 62 },
+  "nodes": [
+    { "id": "J1",   "name": "Junction 1",       "x": 30, "y": 30, "kind": "JUNCTION" },
+    { "id": "J2",   "name": "Junction 2",       "x": 50, "y": 30, "kind": "JUNCTION" },
+    { "id": "J3",   "name": "Junction 3",       "x": 70, "y": 30, "kind": "JUNCTION" },
+    { "id": "T1",   "name": "North 1",          "x": 30, "y": 12, "kind": "JUNCTION" },
+    { "id": "T2",   "name": "North 2",          "x": 70, "y": 12, "kind": "JUNCTION" },
+    { "id": "B1",   "name": "South 1",          "x": 30, "y": 48, "kind": "JUNCTION" },
+    { "id": "B3",   "name": "South 3",          "x": 70, "y": 48, "kind": "JUNCTION" },
+    { "id": "PH",   "name": "Pharmacy",         "x": 10, "y": 12, "kind": "PHARMACY" },
+    { "id": "LAB",  "name": "Laboratory",       "x": 50, "y": 12, "kind": "LAB" },
+    { "id": "OR",   "name": "Operating Room",   "x": 92, "y": 12, "kind": "OR" },
+    { "id": "CSSD", "name": "Sterile Services", "x": 10, "y": 48, "kind": "CSSD" },
+    { "id": "WD",   "name": "Ward D",           "x": 8,  "y": 30, "kind": "WARD" },
+    { "id": "WA",   "name": "Ward A",           "x": 92, "y": 30, "kind": "WARD" },
+    { "id": "WB",   "name": "Ward B",           "x": 92, "y": 48, "kind": "WARD" },
+    { "id": "WC",   "name": "Ward C",           "x": 50, "y": 48, "kind": "WARD" },
+    { "id": "CHG",  "name": "Charging Dock",    "x": 50, "y": 58, "kind": "CHARGING", "capacity": 2 }
+  ],
+  "edges": [
+    { "a": "WD", "b": "J1" }, { "a": "J1", "b": "J2" }, { "a": "J2", "b": "J3" }, { "a": "J3", "b": "WA" },
+    { "a": "J1", "b": "T1" }, { "a": "J3", "b": "T2" }, { "a": "T1", "b": "LAB" }, { "a": "LAB", "b": "T2" },
+    { "a": "J2", "b": "LAB" }, { "a": "PH", "b": "T1" }, { "a": "T2", "b": "OR" },
+    { "a": "J1", "b": "B1" }, { "a": "J2", "b": "WC" }, { "a": "J3", "b": "B3" }, { "a": "B1", "b": "WC" },
+    { "a": "WC", "b": "B3" }, { "a": "B1", "b": "CSSD" }, { "a": "B3", "b": "WB" }, { "a": "WC", "b": "CHG" }
+  ],
+  "zones": []
+}

@@ -1,0 +1,21 @@
+# Profile "vda": run the core against the organizers' VDA 5050 robot simulator (Python, over an MQTT broker).
+# Activate with SPRING_PROFILES_ACTIVE=vda (docker-compose.vda.yml does this). Host/port of the broker still come from
+# SMARTCARE_MQTT_HOST / SMARTCARE_MQTT_PORT.
+smartcare:
+  core:
+    auto-home: true            # the simulator starts its robots in a row beside the route network: drive them onto it
+    park-after-s: 20           # idle robots go to a free charging station instead of blocking a corridor
+  mqtt:
+    mode: BROKER
+    interface-name: uagv
+    major-version: v2
+    map-id: webots
+    order-mode: STEPWISE       # the simulator ignores "released" flags and only takes a new order when the last one is done
+    charge-action: ""          # it charges a robot that stands on a charging node; no action needed
+  sim:
+    enabled: false             # no built-in vehicles: only the organizers' simulator moves robots
+    speed-mps: 1.0             # = speed 0.05 per 50 ms step in the simulator's config.toml
+  traffic:
+    reserve-whole-route: true  # a robot is released onto its whole route at once or not at all (no hold-and-wait deadlocks)
+    physical-clearance-m: 1.0  # the simulator's two collision radii (0.5 + 0.5)
+    avoid-chargers-as-via: true

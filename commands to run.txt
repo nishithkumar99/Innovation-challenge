@@ -1,0 +1,3 @@
+docker compose -f docker-compose.vda.yml up --build
+
+vda-visualizer/start_vda_window.bat

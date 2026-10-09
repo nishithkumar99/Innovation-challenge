@@ -1,0 +1,80 @@
+
+
+
+┌─(rze㉿i0626)-[~]                                                                                             115ms  
+└─$ podman machine list
+NAME                    VM TYPE     CREATED       LAST UP       CPUS        MEMORY      DISK SIZE
+podman-machine-default  wsl         9 months ago  7 months ago  11          2GiB        100GiB
+
+
+-> Starte maschine!!!!!
+┌─(rze㉿i0626)-[~]                                                                                             165ms  
+└─$ podman machine start
+Starting machine "podman-machine-default"
+API forwarding listening on: npipe:////./pipe/docker_engine
+
+Docker API clients default to this address. You do not need to set DOCKER_HOST.
+Machine "podman-machine-default" started successfully
+
+
+-> Starte MQTT Server
+┌─(rze㉿i0626)-[~]                                                                                             165ms  
+└─$ podman run -d --name mosquitto -p 1883:1883 -p 9001:9001 -v mosquitto-data:/mosquitto/data -v mosquitto-conf:/mosquitto/config  eclipse-mosquitto
+Resolving "eclipse-mosquitto" using unqualified-search registries (/etc/containers/registries.conf.d/999-podman-machine.conf)
+Trying to pull docker.io/library/eclipse-mosquitto:latest...
+Getting image source signatures
+Copying blob sha256:9d7cd47effe2f8c6a3d95385e470bd130bb232d0bc17a62da9d7962b34886f19
+Copying blob sha256:e6f31ffc071e5560b82a8685fba8214954e5721e3e49269d00958316edbe89fe
+Copying blob sha256:386c64987679d3a8eaf9cc7d3698f3eda684e6126e8e0c50d4227add3552dc0b
+Copying config sha256:4725ea7590a578122675b1fdd242b94e5034885cfd0806045b25d700f5498ef5
+Writing manifest to image destination
+bdd4e8e45c3e9cb060fac710cff59b94bc4b66462c9d497f0318a6d12cb77f7d
+┌─(rze㉿i0626)-[~]                                                                                                2s  
+└─$ podman ps
+CONTAINER ID  IMAGE                                       COMMAND               CREATED        STATUS         PORTS                                           NAMES
+bdd4e8e45c3e  docker.io/library/eclipse-mosquitto:latest  /usr/sbin/mosquit...  9 seconds ago  Up 10 seconds  0.0.0.0:1883->1883/tcp, 0.0.0.0:9001->9001/tcp  mosquitto
+┌─(rze㉿i0626)-[~]                                                                                             265ms  
+└─$
+
+> Running podman + container
+
+
+
+
+
+======================================================
+Restart 
+======================================================
+
+Microsoft Windows [Version 10.0.26200.8655]
+(c) Microsoft Corporation. Alle Rechte vorbehalten.
+
+C:\Users\rze>podman ps
+Cannot connect to Podman. Please verify your connection to the Linux system using `podman system connection list`, or try `podman machine init` and `podman machine start` to manage a new Linux VM
+Error: unable to connect to Podman socket: failed to connect: dial tcp 127.0.0.1:53187: connectex: No connection could be made because the target machine actively refused it.
+
+C:\Users\rze>podman start machine
+Cannot connect to Podman. Please verify your connection to the Linux system using `podman system connection list`, or try `podman machine init` and `podman machine start` to manage a new Linux VM
+Error: unable to connect to Podman socket: failed to connect: dial tcp 127.0.0.1:53187: connectex: No connection could be made because the target machine actively refused it.
+
+C:\Users\rze>podman machine start
+Starting machine "podman-machine-default"
+API forwarding listening on: npipe:////./pipe/docker_engine
+
+Docker API clients default to this address. You do not need to set DOCKER_HOST.
+Machine "podman-machine-default" started successfully
+
+C:\Users\rze>podman ps
+CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
+
+C:\Users\rze>podman run -d --name mosquitto -p 1883:1883 -p 9001:9001 -v mosquitto-data:/mosquitto/data -v mosquitto-conf:/mosquitto/config  eclipse-mosquitto
+Error: creating container storage: the container name "mosquitto" is already in use by bdd4e8e45c3e9cb060fac710cff59b94bc4b66462c9d497f0318a6d12cb77f7d. You have to remove that container to be able to reuse that name: that name is already in use
+
+C:\Users\rze>podman start mosquitto
+mosquitto
+
+C:\Users\rze>podman ps
+CONTAINER ID  IMAGE                                       COMMAND               CREATED     STATUS        PORTS                                           NAMES
+bdd4e8e45c3e  docker.io/library/eclipse-mosquitto:latest  /usr/sbin/mosquit...  4 days ago  Up 6 seconds  0.0.0.0:1883->1883/tcp, 0.0.0.0:9001->9001/tcp  mosquitto
+
+C:\Users\rze>

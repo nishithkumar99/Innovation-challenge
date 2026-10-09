@@ -1,0 +1,128 @@
+[
+  {
+    "edge_id": "E_Start_S1",
+    "start_node_id": "Waypoint_Hallway_Southwest",
+    "end_node_id": "Waypoint_Hallway_Southwest"
+  },
+  {
+    "edge_id": "E_SW_OR2",
+    "start_node_id": "Waypoint_Hallway_Southwest",
+    "end_node_id": "OR_2_Hallway"
+  },
+  {
+    "edge_id": "E_OR2_OR1",
+    "start_node_id": "OR_2_Hallway",
+    "end_node_id": "OR_1_Hallway"
+  },
+  {
+    "edge_id": "E_S1_C2",
+    "start_node_id": "OR_1_Hallway",
+    "end_node_id": "Waypoint_Hallway_Northwest"
+  },
+  {
+    "edge_id": "E_C2_C3",
+    "start_node_id": "Waypoint_Hallway_Northwest",
+    "end_node_id": "Pharmacy_Hallway"
+  },
+  {
+    "edge_id": "E_Pharmacy_Ward1",
+    "start_node_id": "Pharmacy_Hallway",
+    "end_node_id": "Ward1_Hallway"
+  },
+  {
+    "edge_id": "E_Ward1_N",
+    "start_node_id": "Ward1_Hallway",
+    "end_node_id": "Waypoint_Hallway_North"
+  },
+  {
+    "edge_id": "E_N_NE",
+    "start_node_id": "Waypoint_Hallway_North",
+    "end_node_id": "Waypoint_Hallway_Northeast"
+  },
+  {
+    "edge_id": "E_C2_C4",
+    "start_node_id": "Waypoint_Hallway_Northeast",
+    "end_node_id": "Waste_Hallway"
+  },
+  {
+    "edge_id": "E_C3_S2",
+    "start_node_id": "Waste_Hallway",
+    "end_node_id": "Kitchen_Hallway_North"
+  },
+  {
+    "edge_id": "E_Kitchen_Waypoint",
+    "start_node_id": "Kitchen_Hallway_North",
+    "end_node_id": "Waypoint_Hallway_Northeast"
+  },
+  {
+    "edge_id": "E_Waypoint_Kitchen",
+    "start_node_id": "Waypoint_Hallway_Northeast",
+    "end_node_id": "Kitchen_Hallway_West"
+  },
+  {
+    "edge_id": "E_Kitchen_S1",
+    "start_node_id": "Kitchen_Hallway_West",
+    "end_node_id": "Laundry_Hallway_West"
+  },
+  {
+    "edge_id": "E_Laundry_Waypoint",
+    "start_node_id": "Laundry_Hallway_West",
+    "end_node_id": "Waypoint_Hallway_Southeast"
+  },
+  {
+    "edge_id": "E_SE_Check-In",
+    "start_node_id": "Waypoint_Hallway_Southeast",
+    "end_node_id": "Check-In_Hallway"
+  },
+  {
+    "edge_id": "E_Check-In_SE",
+    "start_node_id": "Check-In_Hallway",
+    "end_node_id": "Waypoint_Hallway_Southeast"
+  },
+  {
+    "edge_id": "E_SE_Storage",
+    "start_node_id": "Waypoint_Hallway_Southeast",
+    "end_node_id": "Storage_Hallway_South"
+  },
+  {
+    "edge_id": "E_Storage_S",
+    "start_node_id": "Storage_Hallway_South",
+    "end_node_id": "Waypoint_Hallway_South"
+  },
+  {
+    "edge_id": "E_Storage_Ward2",
+    "start_node_id": "Waypoint_Hallway_South",
+    "end_node_id": "Charging_Station4_Hallway"
+  },
+  {
+    "edge_id": "E_Charge4_Charge3",
+    "start_node_id": "Charging_Station4_Hallway",
+    "end_node_id": "Charging_Station3_Hallway"
+  },
+  {
+    "edge_id": "E_Charge3_Charge2",
+    "start_node_id": "Charging_Station3_Hallway",
+    "end_node_id": "Charging_Station2_Hallway"
+  },
+  {
+    "edge_id": "E_Charge2_Charge1",
+    "start_node_id": "Charging_Station2_Hallway",
+    "end_node_id": "Charging_Station1_Hallway"
+  },
+  {
+    "edge_id": "E_Charge1_S",
+    "start_node_id": "Charging_Station1_Hallway",
+    "end_node_id": "Waypoint_Hallway_South"
+  },
+  {
+    "edge_id": "E_S_Ward2",
+    "start_node_id": "Waypoint_Hallway_South",
+    "end_node_id": "Ward2_Hallway"
+  },
+  {
+    "edge_id": "E_S_SW",
+    "start_node_id": "Ward2_Hallway",
+    "end_node_id": "Waypoint_Hallway_Southwest"
+  }
+
+]

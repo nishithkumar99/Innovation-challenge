@@ -1,0 +1,41 @@
+# SmartCareLogistics – complete stack:  docker compose up --build
+#   UI            http://localhost:8081
+#   Core API      http://localhost:8080   (health: /actuator/health)
+#   MQTT broker   localhost:1883          (VDA 5050 topics: uagv/v2/#)
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports: ["1883:1883", "9001:9001"]
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  core:
+    build: ./core
+    depends_on: [mosquitto]
+    ports: ["8080:8080"]
+    environment:
+      SMARTCARE_MQTT_MODE: BROKER
+      SMARTCARE_MQTT_HOST: mosquitto
+      SMARTCARE_SIM_ENABLED: "false"            # vehicles come from the "sim" service (or the organisers' simulator)
+      SMARTCARE_CORE_ALLOWED_ORIGINS: http://localhost:8081,http://localhost:4200,http://localhost:8080
+      # SMARTCARE_LLM_ENABLED: "true"
+      # SMARTCARE_LLM_API_KEY: ${ANTHROPIC_API_KEY}
+
+  # Built-in VDA 5050 vehicle simulator. Remove this service when the organisers' simulator publishes to the broker.
+  sim:
+    build: ./core
+    depends_on: [mosquitto, core]
+    environment:
+      SERVER_PORT: "8090"
+      SMARTCARE_CORE_ENABLED: "false"
+      SMARTCARE_SIM_ENABLED: "true"
+      SMARTCARE_SIM_ROBOTS: "5"
+      SMARTCARE_MQTT_MODE: BROKER
+      SMARTCARE_MQTT_HOST: mosquitto
+
+  ui:
+    build: ./ui
+    depends_on: [core]
+    ports: ["8081:80"]
+    environment:
+      SCL_BACKEND: real

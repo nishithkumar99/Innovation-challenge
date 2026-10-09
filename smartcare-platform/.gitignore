@@ -1,0 +1,7 @@
+core/target/
+ui/node_modules/
+ui/dist/
+ui/.angular/
+*.log
+.idea/
+.vscode/
